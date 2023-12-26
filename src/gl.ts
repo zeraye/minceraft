@@ -220,8 +220,6 @@ export const loadTexture = (
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     }
-    console.log("aaa");
-    console.log(image);
   };
   image.src = url;
 

@@ -176,6 +176,54 @@ export const createPositionColorVAO = (
   return vao;
 };
 
+export const createPositionTextureVAO = (
+  gl: WebGL2RenderingContext,
+  vertexBuffer: WebGLBuffer,
+  indexBuffer: WebGLBuffer,
+  textureBuffer: WebGLBuffer,
+  texture: WebGLTexture,
+  positionAttribLocation: number,
+  textureAttribLocation: number
+): WebGLVertexArrayObject => {
+  const vao = gl.createVertexArray();
+  if (!vao) {
+    throw new Error("Cannot create gl vertex array");
+  }
+
+  gl.bindVertexArray(vao);
+
+  gl.enableVertexAttribArray(positionAttribLocation);
+  gl.enableVertexAttribArray(textureAttribLocation);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+  // format: xyzrgb xyzrgb ...
+  gl.vertexAttribPointer(
+    positionAttribLocation,
+    3,
+    gl.FLOAT,
+    false,
+    6 * Float32Array.BYTES_PER_ELEMENT,
+    0
+  );
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
+
+  gl.vertexAttribPointer(textureAttribLocation, 2, gl.FLOAT, false, 0, 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+  gl.bindVertexArray(null);
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+  return vao;
+};
+
 export const createDirection = (yaw: number, pitch: number): vec3 => {
   return vec3.fromValues(
     Math.cos(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch)),

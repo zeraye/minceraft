@@ -135,8 +135,8 @@ import fragmentShader from "./shaders/fragment.glsl";
     yaw += event.movementX * sensitivity;
     pitch -= event.movementY * sensitivity;
 
-    if (pitch > 90.0) pitch = 90.0;
-    if (pitch < -90.0) pitch = -90.0;
+    if (pitch > 89.9) pitch = 89.9;
+    if (pitch < -89.9) pitch = -89.9;
 
     const direction = createDirection(yaw, pitch);
     vec3.normalize(cameraFront, direction);

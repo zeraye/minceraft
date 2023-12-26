@@ -168,3 +168,62 @@ export const createDirection = (yaw: number, pitch: number): vec3 => {
     Math.sin(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch))
   );
 };
+
+const powOf2 = (number: number): boolean => {
+  return (number & (number - 1)) === 0;
+};
+
+// Source: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
+export const loadTexture = (
+  gl: WebGL2RenderingContext,
+  url: string
+): WebGLTexture => {
+  console.log("bbb");
+  const texture = gl.createTexture();
+  if (!texture) {
+    throw new Error("Cannot create gl texture");
+  }
+
+  const target = gl.TEXTURE_2D;
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const width = 1;
+  const height = 1;
+  const border = 0;
+  const format = gl.RGBA;
+  const type = gl.UNSIGNED_BYTE;
+  const pixels = new Uint8Array([0, 255, 0, 255]);
+
+  // Image can load some time. Before this, set texture full green.
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(
+    target,
+    level,
+    internalFormat,
+    width,
+    height,
+    border,
+    format,
+    type,
+    pixels
+  );
+
+  const image = new Image();
+  image.onload = () => {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(target, level, internalFormat, format, type, image);
+
+    if (powOf2(image.width) && powOf2(image.height)) {
+      gl.generateMipmap(gl.TEXTURE_2D);
+    } else {
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    }
+    console.log("aaa");
+    console.log(image);
+  };
+  image.src = url;
+
+  return texture;
+};

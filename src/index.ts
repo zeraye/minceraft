@@ -7,6 +7,7 @@ import {
   CUBOID_INDICES,
   createPositionColorVAO,
   createDirection,
+  loadTexture,
 } from "./gl";
 import { Cuboid } from "./cuboid";
 import vertexShader from "./shaders/vertex.glsl";
@@ -25,6 +26,7 @@ import fragmentShader from "./shaders/fragment.glsl";
 
   const cuboidVertexBuffer = createStaticVertexBuffer(gl, CUBOID_VERTICES);
   const cuboidIndexBuffer = createStaticIndexBuffer(gl, CUBOID_INDICES);
+  const catTexture = loadTexture(gl, "images/cat.jpg");
 
   const program = createProgram(gl, vertexShader, fragmentShader);
 

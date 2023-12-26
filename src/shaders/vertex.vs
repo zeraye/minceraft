@@ -3,6 +3,7 @@ precision mediump float;
 
 uniform mat4 matViewProj;
 uniform mat4 matWorld;
+uniform mat4 matNormal;
 
 in vec3 vertexPosition;
 // in vec3 vertexColor;

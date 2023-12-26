@@ -66,6 +66,11 @@ import fragmentShader from "./shaders/fragment.fs";
     throw new Error("Cannot get gl mat view proj uniform");
   }
 
+  const matNormalUniform = gl.getUniformLocation(program, "matNormal");
+  if (!matNormalUniform) {
+    throw new Error("Cannot get gl mat normal uniform");
+  }
+
   const uSamplerUniform = gl.getUniformLocation(program, "uSampler");
   if (!uSamplerUniform) {
     throw new Error("Cannot get gl sampler");
@@ -216,7 +221,13 @@ import fragmentShader from "./shaders/fragment.fs";
     gl.uniform1i(uSamplerUniform, 0);
 
     cuboids.forEach((cuboid) => {
-      cuboid.draw(gl, cuboidVao, matWorldUniform, CUBOID_INDICES.length);
+      cuboid.draw(
+        gl,
+        cuboidVao,
+        matWorldUniform,
+        matNormalUniform,
+        CUBOID_INDICES.length
+      );
     });
 
     requestAnimationFrame(frame);

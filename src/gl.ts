@@ -28,6 +28,26 @@ export const createStaticIndexBuffer = (
   return createStaticBuffer(gl, data, gl.ELEMENT_ARRAY_BUFFER);
 };
 
+export const createProgram = (
+  gl: WebGL2RenderingContext,
+  vertexShaderSource: string,
+  fragmentShaderSource: string
+): WebGLProgram => {
+  const program = gl.createProgram();
+  if (!program) {
+    throw new Error("Cannot create gl program");
+  }
+
+  createShader(gl, program, vertexShaderSource, gl.VERTEX_SHADER);
+  createShader(gl, program, fragmentShaderSource, gl.FRAGMENT_SHADER);
+
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    throw new Error(`Cannot link gl program. ${gl.getProgramInfoLog(program)}`);
+  }
+
+  return program;
+};
 
 const createShader = (
   gl: WebGL2RenderingContext,

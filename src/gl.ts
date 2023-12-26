@@ -69,3 +69,51 @@ const createShader = (
 
   gl.attachShader(program, shader);
 };
+
+export const createPositionColorVAO = (
+  gl: WebGL2RenderingContext,
+  vertexBuffer: WebGLBuffer,
+  indexBuffer: WebGLBuffer,
+  positionAttribLocation: number,
+  colorAttribLocation: number
+): WebGLVertexArrayObject => {
+  const vao = gl.createVertexArray();
+  if (!vao) {
+    throw new Error("Cannot create gl vertex array");
+  }
+
+  gl.bindVertexArray(vao);
+
+  gl.enableVertexAttribArray(positionAttribLocation);
+  gl.enableVertexAttribArray(colorAttribLocation);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+  // format: xyzrgb xyzrgb ...
+  gl.vertexAttribPointer(
+    positionAttribLocation,
+    3,
+    gl.FLOAT,
+    false,
+    6 * Float32Array.BYTES_PER_ELEMENT,
+    0
+  );
+  gl.vertexAttribPointer(
+    colorAttribLocation,
+    3,
+    gl.FLOAT,
+    false,
+    6 * Float32Array.BYTES_PER_ELEMENT,
+    3 * Float32Array.BYTES_PER_ELEMENT
+  );
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+  gl.bindVertexArray(null);
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+  return vao;
+};

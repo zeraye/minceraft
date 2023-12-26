@@ -70,6 +70,10 @@ import fragmentShader from "./shaders/fragment.glsl";
   const cameraTarget = vec3.fromValues(0, 0, 0);
   const cameraFront = vec3.fromValues(0, 0, -1);
   const cameraUp = vec3.fromValues(0, 1, 0);
+
+  let yaw = 0.0;
+  let pitch = 0.0;
+
   document.addEventListener("keydown", (event: KeyboardEvent) => {
     const cameraSpeed = 0.1;
 
@@ -120,6 +124,28 @@ import fragmentShader from "./shaders/fragment.glsl";
         break;
       }
     }
+  });
+
+  canvas.addEventListener("mousemove", (event: MouseEvent) => {
+    const sensitivity = 0.1;
+
+    yaw += event.movementX * sensitivity;
+    pitch -= event.movementY * sensitivity;
+
+    if (pitch > 90.0) pitch = 90.0;
+    if (pitch < -90.0) pitch = -90.0;
+
+    const direction = vec3.fromValues(
+      Math.cos(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch)),
+      Math.sin(glMatrix.toRadian(pitch)),
+      Math.sin(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch))
+    );
+
+    vec3.normalize(cameraFront, direction);
+  });
+
+  canvas.addEventListener("click", async () => {
+    canvas.requestPointerLock();
   });
 
   let lastFrameTime = performance.now();

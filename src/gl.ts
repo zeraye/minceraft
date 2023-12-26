@@ -113,6 +113,21 @@ export const CUBOID_INDICES = new Uint16Array([
   20, 21, 22, 20, 22, 23,
 ]);
 
+export const TEXTURE_COORDINATES = new Float32Array([
+  // Front
+  0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+  // Back
+  0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+  // Top
+  0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+  // Bottom
+  0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+  // Right
+  0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+  // Left
+  0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+]);
+
 export const createPositionColorVAO = (
   gl: WebGL2RenderingContext,
   vertexBuffer: WebGLBuffer,

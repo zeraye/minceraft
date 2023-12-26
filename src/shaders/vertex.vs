@@ -7,6 +7,7 @@ uniform mat4 matWorld;
 in vec3 vertexPosition;
 // in vec3 vertexColor;
 in vec2 vertexTexture;
+in vec3 vertexNormal;
 
 // out vec3 fragmentColor;
 out vec2 fragmentTexture;

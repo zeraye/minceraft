@@ -51,6 +51,11 @@ import fragmentShader from "./shaders/fragment.fs";
     throw new Error("Cannot get gl vertex texture");
   }
 
+  const normalAttrib = gl.getAttribLocation(program, "vertexNormal");
+  if (normalAttrib < 0) {
+    throw new Error("Cannot get gl vertex normal");
+  }
+
   const matWorldUniform = gl.getUniformLocation(program, "matWorld");
   if (!matWorldUniform) {
     throw new Error("Cannot get gl mat world uniform");

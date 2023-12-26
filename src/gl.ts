@@ -178,7 +178,6 @@ export const loadTexture = (
   gl: WebGL2RenderingContext,
   url: string
 ): WebGLTexture => {
-  console.log("bbb");
   const texture = gl.createTexture();
   if (!texture) {
     throw new Error("Cannot create gl texture");

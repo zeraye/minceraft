@@ -5,7 +5,8 @@ import {
   createStaticIndexBuffer,
   CUBOID_VERTICES,
   CUBOID_INDICES,
-  createPositionColorVAO,
+  TEXTURE_COORDINATES,
+  createPositionTextureVAO,
   createDirection,
   loadTexture,
 } from "./gl";
@@ -27,6 +28,10 @@ import fragmentShader from "./shaders/fragment.glsl";
   const cuboidVertexBuffer = createStaticVertexBuffer(gl, CUBOID_VERTICES);
   const cuboidIndexBuffer = createStaticIndexBuffer(gl, CUBOID_INDICES);
   const catTexture = loadTexture(gl, "images/cat.jpg");
+  const catTextureCoordinatesBuffer = createStaticVertexBuffer(
+    gl,
+    TEXTURE_COORDINATES
+  );
 
   const program = createProgram(gl, vertexShader, fragmentShader);
 
@@ -35,9 +40,14 @@ import fragmentShader from "./shaders/fragment.glsl";
     throw new Error("Cannot get gl position attrib");
   }
 
-  const colorAttrib = gl.getAttribLocation(program, "vertexColor");
-  if (colorAttrib < 0) {
-    throw new Error("Cannot get gl color attrib");
+  // const colorAttrib = gl.getAttribLocation(program, "vertexColor");
+  // if (colorAttrib < 0) {
+  //   throw new Error("Cannot get gl color attrib");
+  // }
+
+  const textureAttrib = gl.getAttribLocation(program, "vertexTexture");
+  if (textureAttrib < 0) {
+    throw new Error("Cannot get gl vertex texture");
   }
 
   const matWorldUniform = gl.getUniformLocation(program, "matWorld");
@@ -50,12 +60,19 @@ import fragmentShader from "./shaders/fragment.glsl";
     throw new Error("Cannot get gl mat view proj uniform");
   }
 
-  const cuboidVao = createPositionColorVAO(
+  const uSamplerUniform = gl.getUniformLocation(program, "uSampler");
+  if (!uSamplerUniform) {
+    throw new Error("Cannot get gl sampler");
+  }
+
+  const cuboidVao = createPositionTextureVAO(
     gl,
     cuboidVertexBuffer,
     cuboidIndexBuffer,
+    catTextureCoordinatesBuffer,
+    catTexture,
     positionAttrib,
-    colorAttrib
+    textureAttrib
   );
 
   const cuboids: Cuboid[] = [
@@ -183,6 +200,10 @@ import fragmentShader from "./shaders/fragment.glsl";
     gl.useProgram(program);
 
     gl.uniformMatrix4fv(matViewProjdUniform, false, viewProjectionMatrix);
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, catTexture);
+    gl.uniform1i(uSamplerUniform, 0);
 
     cuboids.forEach((cuboid) => {
       cuboid.draw(gl, cuboidVao, matWorldUniform, CUBOID_INDICES.length);

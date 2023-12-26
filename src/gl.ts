@@ -188,7 +188,7 @@ const powOf2 = (number: number): boolean => {
   return (number & (number - 1)) === 0;
 };
 
-// Source: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
+// Source: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL#loading_textures
 export const loadTexture = (
   gl: WebGL2RenderingContext,
   url: string

@@ -1,3 +1,5 @@
+import { glMatrix, vec3 } from "gl-matrix";
+
 const createStaticBuffer = (
   gl: WebGL2RenderingContext,
   data: ArrayBuffer,
@@ -157,4 +159,12 @@ export const createPositionColorVAO = (
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 
   return vao;
+};
+
+export const createDirection = (yaw: number, pitch: number): vec3 => {
+  return vec3.fromValues(
+    Math.cos(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch)),
+    Math.sin(glMatrix.toRadian(pitch)),
+    Math.sin(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch))
+  );
 };

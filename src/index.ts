@@ -6,6 +6,7 @@ import {
   CUBOID_VERTICES,
   CUBOID_INDICES,
   createPositionColorVAO,
+  createDirection,
 } from "./gl";
 import { Cuboid } from "./cuboid";
 import vertexShader from "./shaders/vertex.glsl";
@@ -73,6 +74,8 @@ import fragmentShader from "./shaders/fragment.glsl";
 
   let yaw = 0.0;
   let pitch = 0.0;
+  const direction = createDirection(yaw, pitch);
+  vec3.normalize(cameraFront, direction);
 
   document.addEventListener("keydown", (event: KeyboardEvent) => {
     const cameraSpeed = 0.1;
@@ -135,12 +138,7 @@ import fragmentShader from "./shaders/fragment.glsl";
     if (pitch > 90.0) pitch = 90.0;
     if (pitch < -90.0) pitch = -90.0;
 
-    const direction = vec3.fromValues(
-      Math.cos(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch)),
-      Math.sin(glMatrix.toRadian(pitch)),
-      Math.sin(glMatrix.toRadian(yaw)) * Math.cos(glMatrix.toRadian(pitch))
-    );
-
+    const direction = createDirection(yaw, pitch);
     vec3.normalize(cameraFront, direction);
   });
 

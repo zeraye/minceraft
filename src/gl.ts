@@ -128,6 +128,21 @@ export const TEXTURE_COORDINATES = new Float32Array([
   0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
 ]);
 
+export const VERTEX_NORMALS = new Float32Array([
+  // Front
+  0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+  // Back
+  0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
+  // Top
+  0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+  // Bottom
+  0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0,
+  // Right
+  1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+  // Left
+  -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
+]);
+
 export const createPositionColorVAO = (
   gl: WebGL2RenderingContext,
   vertexBuffer: WebGLBuffer,

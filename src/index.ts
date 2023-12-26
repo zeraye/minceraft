@@ -42,11 +42,6 @@ import fragmentShader from "./shaders/fragment.fs";
     throw new Error("Cannot get gl position attrib");
   }
 
-  // const colorAttrib = gl.getAttribLocation(program, "vertexColor");
-  // if (colorAttrib < 0) {
-  //   throw new Error("Cannot get gl color attrib");
-  // }
-
   const textureAttrib = gl.getAttribLocation(program, "vertexTexture");
   if (textureAttrib < 0) {
     throw new Error("Cannot get gl vertex texture");

@@ -222,5 +222,7 @@ export const loadTexture = (
   };
   image.src = url;
 
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
   return texture;
 };

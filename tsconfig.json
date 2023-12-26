@@ -5,6 +5,6 @@
     "moduleResolution": "Node",
     "strict": true,
     "sourceMap": true,
-    "outDir": "./dist"
+    "outDir": "./dist/assets/js"
   }
 }

@@ -11,8 +11,8 @@ import {
   loadTexture,
 } from "./gl";
 import { Cuboid } from "./cuboid";
-import vertexShader from "./shaders/vertex.glsl";
-import fragmentShader from "./shaders/fragment.glsl";
+import vertexShader from "./shaders/vertex.vs";
+import fragmentShader from "./shaders/fragment.fs";
 
 (() => {
   const canvas = document.getElementById("canvas");

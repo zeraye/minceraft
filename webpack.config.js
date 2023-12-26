@@ -12,7 +12,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.glsl$/i,
+        test: /\.fs$/i,
+        use: "raw-loader",
+      },
+      {
+        test: /\.vs$/i,
         use: "raw-loader",
       },
     ],

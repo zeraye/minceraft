@@ -28,3 +28,24 @@ export const createStaticIndexBuffer = (
   return createStaticBuffer(gl, data, gl.ELEMENT_ARRAY_BUFFER);
 };
 
+
+const createShader = (
+  gl: WebGL2RenderingContext,
+  program: WebGLProgram,
+  shaderSource: string,
+  shaderType: number
+): void => {
+  const shader = gl.createShader(shaderType);
+
+  if (!shader) {
+    throw new Error("Cannot create gl shader");
+  }
+
+  gl.shaderSource(shader, shaderSource);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    throw new Error(`Cannot compile gl shader. ${gl.getShaderInfoLog(shader)}`);
+  }
+
+  gl.attachShader(program, shader);
+};

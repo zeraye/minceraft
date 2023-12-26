@@ -32,6 +32,7 @@ import fragmentShader from "./shaders/fragment.fs";
     gl,
     TEXTURE_COORDINATES
   );
+  const cuboidNormalsBuffer = createStaticVertexBuffer(gl, VERTEX_NORMALS);
 
   const program = createProgram(gl, vertexShader, fragmentShader);
 

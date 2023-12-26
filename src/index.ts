@@ -154,8 +154,12 @@ import fragmentShader from "./shaders/fragment.glsl";
     yaw += event.movementX * sensitivity;
     pitch -= event.movementY * sensitivity;
 
-    if (pitch > 89.9) pitch = 89.9;
-    if (pitch < -89.9) pitch = -89.9;
+    // Angle isn't 90 degrees, because at 90 degrees
+    // camera don't render shapes, cameraFront is (0,1,0)
+    const ALMOST_RIGHT_ANGLE = 89.9;
+
+    if (pitch > ALMOST_RIGHT_ANGLE) pitch = ALMOST_RIGHT_ANGLE;
+    if (pitch < -ALMOST_RIGHT_ANGLE) pitch = -ALMOST_RIGHT_ANGLE;
 
     const direction = createDirection(yaw, pitch);
     vec3.normalize(cameraFront, direction);

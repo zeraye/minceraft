@@ -70,6 +70,57 @@ import fragmentShader from "./shaders/fragment.glsl";
   const cameraTarget = vec3.fromValues(0, 0, 0);
   const cameraFront = vec3.fromValues(0, 0, -1);
   const cameraUp = vec3.fromValues(0, 1, 0);
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    const cameraSpeed = 0.1;
+
+    switch (event.key) {
+      case "w": {
+        vec3.scaleAndAdd(
+          cameraPosition,
+          cameraPosition,
+          cameraFront,
+          cameraSpeed
+        );
+        break;
+      }
+      case "s": {
+        vec3.scaleAndAdd(
+          cameraPosition,
+          cameraPosition,
+          cameraFront,
+          -cameraSpeed
+        );
+        break;
+      }
+      case "a": {
+        const cameraCrossFront = vec3.fromValues(0, 0, 0);
+        vec3.cross(cameraCrossFront, cameraFront, cameraUp);
+        vec3.normalize(cameraCrossFront, cameraCrossFront);
+        vec3.scaleAndAdd(
+          cameraPosition,
+          cameraPosition,
+          cameraCrossFront,
+          -cameraSpeed
+        );
+        break;
+      }
+      case "d": {
+        const cameraCrossFront = vec3.fromValues(0, 0, 0);
+        vec3.cross(cameraCrossFront, cameraFront, cameraUp);
+        vec3.normalize(cameraCrossFront, cameraCrossFront);
+        vec3.scaleAndAdd(
+          cameraPosition,
+          cameraPosition,
+          cameraCrossFront,
+          cameraSpeed
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  });
 
   let lastFrameTime = performance.now();
   const frame = () => {

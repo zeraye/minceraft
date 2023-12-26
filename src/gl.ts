@@ -191,14 +191,16 @@ export const createPositionColorVAO = (
   return vao;
 };
 
-export const createPositionTextureVAO = (
+export const createPositionTextureNormalsVAO = (
   gl: WebGL2RenderingContext,
   vertexBuffer: WebGLBuffer,
   indexBuffer: WebGLBuffer,
   textureBuffer: WebGLBuffer,
+  normalsBuffer: WebGLBuffer,
   texture: WebGLTexture,
   positionAttribLocation: number,
-  textureAttribLocation: number
+  textureAttribLocation: number,
+  normalAttribLocation: number
 ): WebGLVertexArrayObject => {
   const vao = gl.createVertexArray();
   if (!vao) {
@@ -209,6 +211,7 @@ export const createPositionTextureVAO = (
 
   gl.enableVertexAttribArray(positionAttribLocation);
   gl.enableVertexAttribArray(textureAttribLocation);
+  gl.enableVertexAttribArray(normalAttribLocation);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
@@ -227,6 +230,12 @@ export const createPositionTextureVAO = (
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
 
   gl.vertexAttribPointer(textureAttribLocation, 2, gl.FLOAT, false, 0, 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
+
+  gl.vertexAttribPointer(normalAttribLocation, 3, gl.FLOAT, false, 0, 0);
 
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 

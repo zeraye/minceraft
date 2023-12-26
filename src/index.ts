@@ -6,7 +6,8 @@ import {
   CUBOID_VERTICES,
   CUBOID_INDICES,
   TEXTURE_COORDINATES,
-  createPositionTextureVAO,
+  VERTEX_NORMALS,
+  createPositionTextureNormalsVAO,
   createDirection,
   loadTexture,
 } from "./gl";
@@ -76,14 +77,16 @@ import fragmentShader from "./shaders/fragment.fs";
     throw new Error("Cannot get gl sampler");
   }
 
-  const cuboidVao = createPositionTextureVAO(
+  const cuboidVao = createPositionTextureNormalsVAO(
     gl,
     cuboidVertexBuffer,
     cuboidIndexBuffer,
     catTextureCoordinatesBuffer,
+    cuboidNormalsBuffer,
     catTexture,
     positionAttrib,
-    textureAttrib
+    textureAttrib,
+    normalAttrib
   );
 
   const cuboids: Cuboid[] = [

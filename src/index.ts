@@ -160,6 +160,19 @@ import directionalFragmentShader from "./shaders/directional/fragment.fs";
     const cameraSpeed = 0.1;
 
     switch (event.key) {
+      case " ": {
+        vec3.scaleAndAdd(cameraPosition, cameraPosition, cameraUp, cameraSpeed);
+        break;
+      }
+      case "z": {
+        vec3.scaleAndAdd(
+          cameraPosition,
+          cameraPosition,
+          cameraUp,
+          -cameraSpeed
+        );
+        break;
+      }
       case "w": {
         vec3.scaleAndAdd(
           cameraPosition,

@@ -1,9 +1,9 @@
 declare module "*.fs" {
-  const content: any;
+  const content: string;
   export default content;
 }
 
 declare module "*.vs" {
-  const content: any;
+  const content: string;
   export default content;
 }

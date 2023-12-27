@@ -12,6 +12,10 @@ import {
   loadTexture,
 } from "./gl";
 import { Cuboid } from "./cuboid";
+import {
+  Sphere,
+  createSphereVerticesNormalsTextureCoordinatesIndices,
+} from "./sphere";
 import directionalVertexShader from "./shaders/directional/vertex.vs";
 import directionalFragmentShader from "./shaders/directional/fragment.fs";
 
@@ -26,14 +30,38 @@ import directionalFragmentShader from "./shaders/directional/fragment.fs";
     throw new Error("WebGL2 is not supported");
   }
 
+  const radius = 1.0;
+  const sectorCount = 20;
+  const stackCount = 8;
+
+  const [
+    sphereVertices,
+    sphereNormals,
+    sphereTextureCoordinates,
+    sphereIndices,
+  ] = createSphereVerticesNormalsTextureCoordinatesIndices(
+    radius,
+    sectorCount,
+    stackCount
+  );
+
   const cuboidVertexBuffer = createStaticVertexBuffer(gl, CUBOID_VERTICES);
   const cuboidIndexBuffer = createStaticIndexBuffer(gl, CUBOID_INDICES);
-  const catTexture = loadTexture(gl, "images/cat.jpg");
+  const cuboidNormalsBuffer = createStaticVertexBuffer(gl, VERTEX_NORMALS);
   const catTextureCoordinatesBuffer = createStaticVertexBuffer(
     gl,
     TEXTURE_COORDINATES
   );
-  const cuboidNormalsBuffer = createStaticVertexBuffer(gl, VERTEX_NORMALS);
+
+  const sphereVertexBuffer = createStaticVertexBuffer(gl, sphereVertices);
+  const sphereIndexBuffer = createStaticIndexBuffer(gl, sphereIndices);
+  const sphereNormalsBuffer = createStaticVertexBuffer(gl, sphereNormals);
+  const sphereCatTextureCoordinatesBuffer = createStaticVertexBuffer(
+    gl,
+    sphereTextureCoordinates
+  );
+
+  const catTexture = loadTexture(gl, "images/cat.jpg");
 
   const program = createProgram(
     gl,
@@ -94,12 +122,25 @@ import directionalFragmentShader from "./shaders/directional/fragment.fs";
     normalAttrib
   );
 
+  const sphereVao = createPositionTextureNormalsVAO(
+    gl,
+    sphereVertexBuffer,
+    sphereIndexBuffer,
+    sphereCatTextureCoordinatesBuffer,
+    sphereNormalsBuffer,
+    catTexture,
+    positionAttrib,
+    textureAttrib,
+    normalAttrib
+  );
+
   const cuboids: Cuboid[] = [
-    new Cuboid(vec3.fromValues(5, 0, 0), vec3.fromValues(1, 1, 1)),
     new Cuboid(vec3.fromValues(-5, 0, 0), vec3.fromValues(1, 2, 1)),
     new Cuboid(vec3.fromValues(0, 0, 5), vec3.fromValues(1, 1, 1)),
     new Cuboid(vec3.fromValues(0, 0, -5), vec3.fromValues(1, 2, 1)),
   ];
+
+  const sphere = new Sphere(vec3.fromValues(5, 0, 0), vec3.fromValues(1, 1, 1));
 
   const viewMatrix = mat4.create();
   const projectionMatrix = mat4.create();
@@ -240,6 +281,14 @@ import directionalFragmentShader from "./shaders/directional/fragment.fs";
         CUBOID_INDICES.length
       );
     });
+
+    sphere.draw(
+      gl,
+      sphereVao,
+      matWorldUniform,
+      matNormalUniform,
+      sphereIndices.length
+    );
 
     requestAnimationFrame(frame);
   };

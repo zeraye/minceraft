@@ -12,8 +12,8 @@ import {
   loadTexture,
 } from "./gl";
 import { Cuboid } from "./cuboid";
-import vertexShader from "./shaders/vertex.vs";
-import fragmentShader from "./shaders/fragment.fs";
+import directionalVertexShader from "./shaders/directional/vertex.vs";
+import directionalFragmentShader from "./shaders/directional/fragment.fs";
 
 (() => {
   const canvas = document.getElementById("canvas");
@@ -35,7 +35,11 @@ import fragmentShader from "./shaders/fragment.fs";
   );
   const cuboidNormalsBuffer = createStaticVertexBuffer(gl, VERTEX_NORMALS);
 
-  const program = createProgram(gl, vertexShader, fragmentShader);
+  const program = createProgram(
+    gl,
+    directionalVertexShader,
+    directionalFragmentShader
+  );
 
   const positionAttrib = gl.getAttribLocation(program, "vertexPosition");
   if (positionAttrib < 0) {
@@ -66,6 +70,12 @@ import fragmentShader from "./shaders/fragment.fs";
   if (!matNormalUniform) {
     throw new Error("Cannot get gl mat normal uniform");
   }
+
+  // NOTE: temporary don't use viewPosition, because directional shaders don't use them
+  // const viewPositionUniform = gl.getUniformLocation(program, "viewPosition");
+  // if (!viewPositionUniform) {
+  //   throw new Error("Cannot get gl view position uniform");
+  // }
 
   const uSamplerUniform = gl.getUniformLocation(program, "uSampler");
   if (!uSamplerUniform) {
@@ -213,6 +223,9 @@ import fragmentShader from "./shaders/fragment.fs";
     gl.useProgram(program);
 
     gl.uniformMatrix4fv(matViewProjdUniform, false, viewProjectionMatrix);
+
+    // NOTE: temporary don't use viewPosition, because directional shaders don't use them
+    // gl.uniform3fv(viewPositionUniform, cameraPosition);
 
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, catTexture);

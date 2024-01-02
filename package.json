@@ -2,7 +2,6 @@
   "name": "minceraft",
   "version": "1.0.0",
   "description": "Something's not quite right...",
-  "main": "index.js",
   "scripts": {
     "build": "webpack",
     "dev": "webpack --watch"

@@ -1,12 +1,14 @@
 * {
   margin: 0;
+  padding: 0;
 }
 
 body {
-  padding: 20px;
   background-color: #181a1b;
+  padding: 10px;
 }
 
 #canvas {
   background-color: #fa8072;
+  height: calc(100vh - 20px);
 }

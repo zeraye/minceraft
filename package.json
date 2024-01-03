@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/gl-matrix": "^3.2.0",
     "raw-loader": "^4.0.2",
+    "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack-cli": "^5.1.4"

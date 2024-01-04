@@ -1,4 +1,5 @@
 node_modules/
 dist/assets/js/*.js
+dist/assets/js/*.js.*
 .vscode/
 resourcepack/

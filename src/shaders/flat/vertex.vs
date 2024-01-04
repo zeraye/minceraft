@@ -17,7 +17,7 @@ in vec3 normal;
 in vec2 texcoord;
 in uint faceId;
 
-out vec4 v_position;
+flat out vec4 v_position;
 out vec2 v_texCoord;
 flat out uint v_faceId;
 flat out float v_lambertian;

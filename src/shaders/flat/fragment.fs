@@ -1,7 +1,7 @@
 #version 300 es
 precision mediump float;
 
-in vec4 v_position;
+flat in vec4 v_position;
 in vec2 v_texCoord;
 flat in uint v_faceId;
 flat in float v_lambertian;

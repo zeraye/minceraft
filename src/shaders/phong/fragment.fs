@@ -19,6 +19,9 @@ uniform float u_specularFactor;
 uniform vec3 u_spotLightDirection;
 uniform float u_spotLightInner;
 uniform float u_spotLightOuter;
+uniform float u_fogNear;
+uniform float u_fogFar;
+uniform vec4 u_fogColor;
 uniform int u_mode;
 
 out vec4 fragColor;
@@ -56,5 +59,6 @@ void main() {
       u_specular * (specular + max(spotLight_specular, 0.0)) * u_specularFactor
     )).rgb, diffuseColor.a);
 
-  fragColor = outColor;
+  float fogAmount = smoothstep(u_fogNear, u_fogFar, v_position.z);
+  fragColor = mix(outColor, u_fogColor, fogAmount);
 }

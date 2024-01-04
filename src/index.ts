@@ -94,7 +94,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     throw new Error("WebGL2 is not supported");
   }
 
-  let shadersType: "phong" | "gouraud" | "flat" = "flat";
+  let shadersType: "phong" | "gouraud" | "flat" = "phong";
 
   const programs = {
     phong: twgl.createProgramInfo(gl, [phongVertexShader, phongFragmentShader]),

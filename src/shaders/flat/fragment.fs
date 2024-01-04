@@ -6,6 +6,8 @@ in vec2 v_texCoord;
 flat in uint v_faceId;
 flat in float v_lambertian;
 flat in float v_specular;
+flat in float v_spotLight_light;
+flat in float v_spotLight_specular;
 
 uniform vec4 u_lightColor;
 uniform vec4 u_ambient;
@@ -27,10 +29,10 @@ void main() {
     diffuseColor = vec4(0.0, 0.0, 1.0, 1.0);
   }
 
-  vec4 outColor = vec4((u_lightColor * (
+  vec4 outColor = vec4((u_lightColor * max(v_spotLight_light, 1.0) * (
       diffuseColor * u_ambient +
       diffuseColor * v_lambertian +
-      u_specular * v_specular * u_specularFactor
+      u_specular * (v_specular + max(v_spotLight_specular, 0.0)) * u_specularFactor
     )).rgb, diffuseColor.a);
 
   fragColor = outColor;

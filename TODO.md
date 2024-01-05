@@ -1,0 +1,16 @@
+Things to do:
+- [ ] one moving object (move + rotation)
+- [ ] several fixed objects (one of them sooth - bezier surface with animation)
+- [ ] stationary observing the scene camera
+- [ ] stationary tracking a moving object camera
+- [ ] associated with a moving object camera
+- [x] free camera
+- [x] fixed shading
+- [x] gouraud shading
+- [x] phong shading
+- [ ] two reflectors on a moving object
+- [ ] manually change relative direction of reflectors
+- [ ] two fixed light sources
+- [x] fog
+- [x] night/day
+- [x] fading of light with distance

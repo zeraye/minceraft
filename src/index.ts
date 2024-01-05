@@ -135,6 +135,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     u_worldInverseTranspose: mat4.create(),
     u_worldViewProjection: mat4.create(),
     u_mode: 0,
+    u_day: true,
   };
 
   const cubeArrays = {
@@ -265,7 +266,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
       vec3.normalize(camFront, direction);
     });
 
-    // shading type
+    // options
     document.addEventListener("keydown", (event: KeyboardEvent) => {
       switch (event.key) {
         case "[":
@@ -276,6 +277,12 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
           break;
         case "\\":
           shadersType = "flat";
+          break;
+        case "k":
+          uniforms.u_day = true;
+          break;
+        case "l":
+          uniforms.u_day = false;
           break;
         default:
           break;

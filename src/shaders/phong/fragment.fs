@@ -23,6 +23,7 @@ uniform float u_fogNear;
 uniform float u_fogFar;
 uniform vec4 u_fogColor;
 uniform int u_mode;
+uniform bool u_day;
 
 out vec4 fragColor;
 
@@ -43,6 +44,11 @@ void main() {
 
   float lambertian = max(dot(a_normal, surfaceToLight), 0.0);
   float specular = (lambertian > 0.0) ? pow(max(0.0, dot(a_normal, halfVector)), u_shininess) : 0.0;
+
+  if (!u_day) {
+    lambertian = 0.0;
+    specular = 0.0;
+  }
 
   // spot light
   vec3 spotLight_surfaceToLight = normalize(v_surfaceToSpotLight);

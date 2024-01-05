@@ -11,6 +11,7 @@ uniform mat4 u_world;
 uniform mat4 u_viewInverse;
 uniform mat4 u_worldInverseTranspose;
 uniform float u_shininess;
+uniform bool u_day;
 
 in vec4 position;
 in vec3 normal;
@@ -41,6 +42,11 @@ void main() {
 
   v_lambertian = max(dot(a_normal, surfaceToLight), 0.0);
   v_specular = (v_lambertian > 0.0) ? pow(max(0.0, dot(a_normal, halfVector)), u_shininess) : 0.0;
+
+  if (!u_day) {
+    v_lambertian = 0.0;
+    v_specular = 0.0;
+  }
 
   // spot light
   vec3 spotLight_surfaceToLight = normalize(v_surfaceToSpotLight);

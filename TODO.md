@@ -1,6 +1,6 @@
 Things to do:
 - [ ] one moving object (move + rotation)
-- [ ] several fixed objects (one of them sooth - bezier surface with animation)
+- [ ] several fixed objects (one of them smooth - bezier surface with animation)
 - [ ] stationary observing the scene camera
 - [ ] stationary tracking a moving object camera
 - [ ] associated with a moving object camera

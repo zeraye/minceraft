@@ -11,7 +11,7 @@ Things to do:
 - [x] gouraud shading
 - [x] phong shading
 - [ ] two reflectors on a moving object
-- [ ] manually change relative direction of reflectors
+- [x] manually change relative direction of reflectors
 - [ ] two fixed light sources
 - [x] fog
 - [x] night/day

@@ -5,7 +5,7 @@ import gouraudFragmentShader from "./shaders/gouraud/fragment.fs";
 import flatVertexShader from "./shaders/flat/vertex.vs";
 import flatFragmentShader from "./shaders/flat/fragment.fs";
 
-import { glMatrix, mat4, vec3 } from "gl-matrix";
+import { glMatrix, mat4, quat, vec3 } from "gl-matrix";
 import * as twgl from "twgl.js";
 
 const createSphereVerticesNormalsTextureCoordinatesIndices = (
@@ -189,7 +189,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
   };
   const cubeBufferInfo = twgl.createBufferInfoFromArrays(gl, cubeArrays);
 
-  const preSphereArrays = createSphereVerticesNormalsTextureCoordinatesIndices(2, 20, 20);
+  const preSphereArrays = createSphereVerticesNormalsTextureCoordinatesIndices(2, 7, 7);
   const sphereArrays = {
     position: preSphereArrays[0],
     normal: preSphereArrays[1],
@@ -395,6 +395,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
 
   image.src = "images/heightmap.jpg";
 
+  let spotLightRotationAngle = 0;
   let angle = 0;
   let lastFrameTime = performance.now();
   const frame = () => {
@@ -437,7 +438,11 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     // draw single circle
     {
       twgl.setBuffersAndAttributes(gl, programInfo, sphereBufferInfo);
-      const world = mat4.fromTranslation(mat4.create(), uniforms.u_spotLightWorldPos);
+      const world = mat4.fromRotationTranslation(
+        mat4.create(),
+        quat.fromEuler(quat.create(), 0, spotLightRotationAngle++, 0),
+        uniforms.u_spotLightWorldPos
+      );
 
       uniforms.u_spotLightWorldPos = vec3.fromValues(33 + 10 * Math.cos(angle), 31, 54 + 10 * Math.sin(angle));
 

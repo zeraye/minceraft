@@ -129,10 +129,10 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     u_specular: [1, 1, 1, 1],
     u_shininess: 50,
     u_specularFactor: 1,
-    u_spotLightDirection: vec3.fromValues(0.1, -1.0, 0.0),
+    u_spotLightDirection: vec3.normalize(vec3.create(), vec3.fromValues(0.0, -0.9, 0.0)),
     u_spotLightWorldPos: vec3.fromValues(33.0, 31.0, 54.0),
-    u_spotLightInner: 0.91,
-    u_spotLightOuter: 0.95,
+    u_spotLightInner: 0.97,
+    u_spotLightOuter: 0.99,
     u_fogNear: 50.0,
     u_fogFar: 100.0,
     u_fogColor: [0.98, 0.502, 0.447, 1.0],
@@ -211,6 +211,8 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
 
   let yaw = 0.0;
   let pitch = 0.0;
+  let SLyaw = 0.0; // spot light yaw
+  let SLpitch = -89.0; // spot light pitch
   const direction = createDirection(yaw, pitch);
   vec3.normalize(camFront, direction);
 
@@ -270,20 +272,28 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
   };
 
   const mousemoveEventFn = (event: MouseEvent) => {
-    const sensitivity = 0.1;
-
-    yaw += event.movementX * sensitivity;
-    pitch -= event.movementY * sensitivity;
-
     // Angle isn't 90 degrees, because at 90 degrees
     // camera don't render shapes, cameraFront is (0,1,0)
     const ALMOST_RIGHT_ANGLE = 89.9;
+    const sensitivity = 0.1;
 
-    if (pitch > ALMOST_RIGHT_ANGLE) pitch = ALMOST_RIGHT_ANGLE;
-    if (pitch < -ALMOST_RIGHT_ANGLE) pitch = -ALMOST_RIGHT_ANGLE;
+    if (cameraType === "free") {
+      yaw += event.movementX * sensitivity;
+      pitch -= event.movementY * sensitivity;
 
-    const direction = createDirection(yaw, pitch);
-    vec3.normalize(camFront, direction);
+      if (pitch > ALMOST_RIGHT_ANGLE) pitch = ALMOST_RIGHT_ANGLE;
+      if (pitch < -ALMOST_RIGHT_ANGLE) pitch = -ALMOST_RIGHT_ANGLE;
+
+      const direction = createDirection(yaw, pitch);
+      vec3.normalize(camFront, direction);
+    }
+    if (cameraType === "following") {
+      SLyaw += event.movementX * sensitivity;
+      SLpitch -= event.movementY * sensitivity;
+
+      if (SLpitch > ALMOST_RIGHT_ANGLE) SLpitch = ALMOST_RIGHT_ANGLE;
+      if (SLpitch < -ALMOST_RIGHT_ANGLE) SLpitch = -ALMOST_RIGHT_ANGLE;
+    }
   };
 
   let isPointerLock = false;
@@ -337,7 +347,9 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
         break;
       }
       case "following": {
-        vec3.add(camTarget, uniforms.u_spotLightWorldPos, vec3.normalize(vec3.create(), uniforms.u_spotLightDirection));
+        const direction = createDirection(SLyaw, SLpitch);
+        vec3.normalize(uniforms.u_spotLightDirection, direction);
+        vec3.add(camTarget, uniforms.u_spotLightWorldPos, uniforms.u_spotLightDirection);
         mat4.lookAt(view, uniforms.u_spotLightWorldPos, camTarget, camUp);
         break;
       }

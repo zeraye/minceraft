@@ -1,9 +1,11 @@
 Things to do:
+
 - [ ] one moving object (move + rotation)
-- [ ] several fixed objects (one of them smooth - bezier surface with animation)
-- [ ] stationary observing the scene camera
-- [ ] stationary tracking a moving object camera
-- [ ] associated with a moving object camera
+- [x] several fixed objects
+- [ ] smooth fixed object - bezier surface with animation
+- [x] stationary observing the scene camera
+- [x] stationary tracking a moving object camera
+- [x] associated with a moving object camera
 - [x] free camera
 - [x] fixed shading
 - [x] gouraud shading

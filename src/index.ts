@@ -129,8 +129,8 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     u_specular: [1, 1, 1, 1],
     u_shininess: 50,
     u_specularFactor: 1,
-    u_spotLightDirection: [0.0, -1.0, 0.0],
-    u_spotLightWorldPos: [33.0, 31.0, 54.0],
+    u_spotLightDirection: vec3.fromValues(0.1, -1.0, 0.0),
+    u_spotLightWorldPos: vec3.fromValues(33.0, 31.0, 54.0),
     u_spotLightInner: 0.91,
     u_spotLightOuter: 0.95,
     u_fogNear: 50.0,
@@ -293,6 +293,50 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     });
   });
 
+  let cameraType: "free" | "scene" | "tracking" | "following" = "free";
+
+  const cameraElement = document.getElementById("camera");
+  if (!cameraElement || !(cameraElement instanceof HTMLSelectElement)) {
+    throw new Error("Cannot get camera element");
+  }
+
+  cameraElement.addEventListener("change", () => {
+    cameraType = cameraElement.value as "free" | "scene" | "tracking" | "following";
+  });
+
+  const calcViewProjection = () => {
+    switch (cameraType) {
+      case "free": {
+        vec3.add(camTarget, camPosition, camFront);
+        mat4.lookAt(view, camPosition, camTarget, camUp);
+        break;
+      }
+      case "scene": {
+        const _camPosition = vec3.fromValues(5, 50, 5);
+        const _camTarget = vec3.fromValues(40, 31, 50);
+        mat4.lookAt(view, _camPosition, _camTarget, camUp);
+        break;
+      }
+      case "following": {
+        vec3.add(camTarget, uniforms.u_spotLightWorldPos, vec3.normalize(vec3.create(), uniforms.u_spotLightDirection));
+        mat4.lookAt(view, uniforms.u_spotLightWorldPos, camTarget, camUp);
+        break;
+      }
+      case "tracking": {
+        const _camPosition = vec3.fromValues(32, 50, 60);
+        mat4.lookAt(view, _camPosition, uniforms.u_spotLightWorldPos, camUp);
+        break;
+      }
+      default:
+        throw new Error("Invalid camera type: " + cameraType);
+    }
+
+    mat4.perspective(projection, glMatrix.toRadian(70), canvas.width / canvas.height, 0.1, 1000.0);
+    mat4.mul(viewProjection, projection, view);
+
+    return { viewProjection, view };
+  };
+
   const blocks: vec3[] = [];
 
   const image = new Image(50, 50);
@@ -337,10 +381,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
 
-    vec3.add(camTarget, camPosition, camFront);
-    mat4.lookAt(view, camPosition, camTarget, camUp);
-    mat4.perspective(projection, glMatrix.toRadian(70), canvas.width / canvas.height, 0.1, 1000.0);
-    mat4.mul(viewProjection, projection, view);
+    const { viewProjection, view } = calcViewProjection();
 
     const programInfo = programs[shadersType];
     gl.useProgram(programInfo.program);

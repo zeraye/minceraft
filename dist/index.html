@@ -20,14 +20,21 @@
       <div id="options">
         <label for="shaedrs">Shader</label>
         <select name="shaders" id="shaders">
-          <option value="flat" selected>Flat</option>
+          <option value="flat">Flat</option>
           <option value="gouraud">Gouraud</option>
-          <option value="phong">Phong</option>
+          <option value="phong" selected>Phong</option>
         </select>
         <label for="daynight">Day/Night</label>
         <select name="daynight" id="daynight">
           <option value="day" selected>Day</option>
           <option value="night">Night</option>
+        </select>
+        <label for="camera">Camera</label>
+        <select name="camera" id="camera">
+          <option value="free" selected>Free</option>
+          <option value="scene">Scene</option>
+          <option value="tracking">Tracking</option>
+          <option value="following">Following</option>
         </select>
       </div>
     </div>

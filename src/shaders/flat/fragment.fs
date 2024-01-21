@@ -32,10 +32,10 @@ void main() {
     diffuseColor = vec4(0.0, 0.0, 1.0, 1.0);
   }
 
-  vec4 outColor = vec4((u_lightColor * max(v_spotLight_light, 1.0) * (
+  vec4 outColor = vec4((u_lightColor * max(v_spotLight_light + 1.0, 1.0) * (
       diffuseColor * u_ambient +
       diffuseColor * v_lambertian +
-      u_specular * (v_specular + max(v_spotLight_specular, 0.0)) * u_specularFactor
+      u_specular * v_specular * u_specularFactor
     )).rgb, diffuseColor.a);
 
   float fogAmount = smoothstep(u_fogNear, u_fogFar, v_position.z);

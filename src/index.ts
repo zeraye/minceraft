@@ -129,8 +129,8 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     u_specular: [1, 1, 1, 1],
     u_shininess: 50,
     u_specularFactor: 1,
-    u_spotLightDirection: [1.0, 0.0, 0.0],
-    u_spotLightWorldPos: [-40.0, 12.0, -20.0],
+    u_spotLightDirection: [0.0, -1.0, 0.0],
+    u_spotLightWorldPos: [33.0, 31.0, 54.0],
     u_spotLightInner: 0.91,
     u_spotLightOuter: 0.95,
     u_fogNear: 50.0,
@@ -185,7 +185,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
   const projection = mat4.create();
   const viewProjection = mat4.create();
 
-  const camPosition = vec3.fromValues(-40, 10, 5);
+  const camPosition = vec3.fromValues(33, 31, 54);
   const camTarget = vec3.fromValues(0, 0, 0);
   const camFront = vec3.fromValues(0, 0, -1);
   const camUp = vec3.fromValues(0, 1, 0);

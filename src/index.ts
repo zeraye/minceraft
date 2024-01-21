@@ -299,16 +299,37 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
 
   const blocks: vec3[] = [];
 
-  for (let i = -16; i < 16; ++i) {
-    for (let y = 0; y < 16; ++y) {
-      blocks.push(vec3.fromValues(0, y * 2, 2 * i));
-    }
-  }
+  const image = new Image(50, 50);
+  image.onload = () => {
+    const ctx = document.createElement("canvas").getContext("2d");
 
+    if (!ctx) {
+      throw new Error("Cannot get canvas context for heightmap");
+    }
+
+    canvas.width = image.width;
+    canvas.height = image.height;
+    ctx.drawImage(image, 0, 0);
+
+    const rgba = ctx.getImageData(0, 0, image.width, image.height).data;
+    const width = image.width;
+    const n = rgba.length;
+    for (let i = 0; i < n; i += 4) {
+      const x = Math.floor((i / 4) % width) % n;
+      const y = Math.floor(i / (4 * width)) % n;
+      const rgb = rgba[i] + rgba[+1] + rgba[i + 2];
+      blocks.push(vec3.fromValues(x * 2, 2 * Math.floor(rgb / (3 * 15)), y * 2));
+    }
+  };
+
+  image.src = "images/heightmap.jpg";
+
+  let angle = 0;
   let lastFrameTime = performance.now();
   const frame = () => {
     const currentFrameTime = performance.now();
     const dt = (currentFrameTime - lastFrameTime) / 1000;
+    const fps = 1000 / (currentFrameTime - lastFrameTime);
     lastFrameTime = currentFrameTime;
 
     twgl.resizeCanvasToDisplaySize(canvas);

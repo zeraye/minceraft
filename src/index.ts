@@ -145,6 +145,25 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     u_day: true,
   };
 
+  // connect options to uniforms
+  const shaders = document.getElementById("shaders");
+  if (!shaders || !(shaders instanceof HTMLSelectElement)) {
+    throw new Error("Cannot get shaders element");
+  }
+
+  shaders.addEventListener("change", () => {
+    shadersType = shaders.value as "phong" | "gouraud" | "flat";
+  });
+
+  const daynight = document.getElementById("daynight");
+  if (!daynight || !(daynight instanceof HTMLSelectElement)) {
+    throw new Error("Cannot get daynight element");
+  }
+
+  daynight.addEventListener("change", () => {
+    uniforms.u_day = daynight.value === "day";
+  });
+
   const cubeArrays = {
     position: [
       1, 1, -1, 1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, -1, 1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
@@ -271,29 +290,6 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
 
       const direction = createDirection(yaw, pitch);
       vec3.normalize(camFront, direction);
-    });
-
-    // options
-    document.addEventListener("keydown", (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "[":
-          shadersType = "phong";
-          break;
-        case "]":
-          shadersType = "gouraud";
-          break;
-        case "\\":
-          shadersType = "flat";
-          break;
-        case "k":
-          uniforms.u_day = true;
-          break;
-        case "l":
-          uniforms.u_day = false;
-          break;
-        default:
-          break;
-      }
     });
   });
 

@@ -8,11 +8,28 @@
     <title>Minceraft</title>
   </head>
   <body>
-    <canvas id="canvas" width="500" height="500"> Your browser doesn't support canvas! </canvas>
-    <div id="overlay">
-      <div>Fps: <span id="fps"></span></div>
-      <div>X, Y, Z: <span id="xyz"></span></div>
-      <div>Yaw, Pitch: <span id="yawpitch"></span></div>
+    <div id="main">
+      <div id="game">
+        <canvas id="canvas" width="500" height="500"> Your browser doesn't support canvas! </canvas>
+        <div id="overlay">
+          <div>Fps: <span id="fps"></span></div>
+          <div>X, Y, Z: <span id="xyz"></span></div>
+          <div>Yaw, Pitch: <span id="yawpitch"></span></div>
+        </div>
+      </div>
+      <div id="options">
+        <label for="shaedrs">Shader</label>
+        <select name="shaders" id="shaders">
+          <option value="flat" selected>Flat</option>
+          <option value="gouraud">Gouraud</option>
+          <option value="phong">Phong</option>
+        </select>
+        <label for="daynight">Day/Night</label>
+        <select name="daynight" id="daynight">
+          <option value="day" selected>Day</option>
+          <option value="night">Night</option>
+        </select>
+      </div>
     </div>
     <script src="assets/js/index.js"></script>
   </body>

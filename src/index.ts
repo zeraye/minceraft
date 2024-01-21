@@ -330,6 +330,8 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     const currentFrameTime = performance.now();
     const dt = (currentFrameTime - lastFrameTime) / 1000;
     const fps = 1000 / (currentFrameTime - lastFrameTime);
+
+    angle += dt;
     lastFrameTime = currentFrameTime;
 
     twgl.resizeCanvasToDisplaySize(canvas);
@@ -365,13 +367,20 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     }
 
     // draw single circle
-    twgl.setBuffersAndAttributes(gl, programInfo, sphereBufferInfo);
-    const world = mat4.fromTranslation(mat4.create(), vec3.fromValues(-20, 12, 5));
+    {
+      twgl.setBuffersAndAttributes(gl, programInfo, sphereBufferInfo);
+      const world = mat4.fromTranslation(mat4.create(), uniforms.u_spotLightWorldPos);
 
-    uniforms.u_world = world;
-    uniforms.u_worldInverseTranspose = mat4.transpose(mat4.create(), mat4.invert(mat4.create(), world));
-    uniforms.u_worldViewProjection = mat4.multiply(mat4.create(), viewProjection, world);
-    uniforms.u_mode = 1;
+      uniforms.u_spotLightWorldPos = vec3.fromValues(33 + 10 * Math.cos(angle), 31, 54 + 10 * Math.sin(angle));
+
+      uniforms.u_world = world;
+      uniforms.u_worldInverseTranspose = mat4.transpose(mat4.create(), mat4.invert(mat4.create(), world));
+      uniforms.u_worldViewProjection = mat4.multiply(mat4.create(), viewProjection, world);
+      uniforms.u_mode = 1;
+
+      twgl.setUniforms(programInfo, uniforms);
+      gl.drawElements(gl.TRIANGLES, sphereBufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+    }
 
     xyzNode.textContent = `${camPosition[0].toFixed(0)}, ${camPosition[1].toFixed(0)}, ${camPosition[2].toFixed(0)}`;
     yawpitchNode.textContent = `${yaw.toFixed(0)}, ${pitch.toFixed(0)}`;

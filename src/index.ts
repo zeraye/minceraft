@@ -248,49 +248,68 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
   const keys: { [key: string]: boolean } = { w: false, s: false, a: false, d: false, Shift: false, " ": false };
   const intervalIds: { [key: string]: NodeJS.Timeout | -1 } = { w: -1, s: -1, a: -1, d: -1, Shift: -1, " ": -1 };
 
+  const keydownEventFn = (event: KeyboardEvent) => {
+    const key = event.key;
+    if (!(key in timers)) return;
+
+    if (!keys[key] && intervalIds[key] == -1) {
+      keys[key] = true;
+      intervalIds[key] = setInterval(timers[key], 25);
+    }
+  };
+
+  const keyupEventFn = (event: KeyboardEvent) => {
+    const key = event.key;
+    if (!(key in timers)) return;
+
+    if (keys[key] && intervalIds[key] != -1) {
+      keys[key] = false;
+      clearInterval(intervalIds[key]);
+      intervalIds[key] = -1;
+    }
+  };
+
+  const mousemoveEventFn = (event: MouseEvent) => {
+    const sensitivity = 0.1;
+
+    yaw += event.movementX * sensitivity;
+    pitch -= event.movementY * sensitivity;
+
+    // Angle isn't 90 degrees, because at 90 degrees
+    // camera don't render shapes, cameraFront is (0,1,0)
+    const ALMOST_RIGHT_ANGLE = 89.9;
+
+    if (pitch > ALMOST_RIGHT_ANGLE) pitch = ALMOST_RIGHT_ANGLE;
+    if (pitch < -ALMOST_RIGHT_ANGLE) pitch = -ALMOST_RIGHT_ANGLE;
+
+    const direction = createDirection(yaw, pitch);
+    vec3.normalize(camFront, direction);
+  };
+
+  let isPointerLock = false;
+  document.onpointerlockchange = (e: Event) => {
+    if (isPointerLock) {
+      // keyboard movement
+      document.removeEventListener("keyup", keyupEventFn);
+      document.removeEventListener("keydown", keydownEventFn);
+
+      // mouse movement
+      canvas.removeEventListener("mousemove", mousemoveEventFn);
+    } else {
+      // keyboard movement
+      document.addEventListener("keyup", keyupEventFn);
+      document.addEventListener("keydown", keydownEventFn);
+
+      // mouse movement
+      canvas.addEventListener("mousemove", mousemoveEventFn);
+    }
+
+    isPointerLock = !isPointerLock;
+  };
+
   // lock mouse mode
   canvas.addEventListener("click", () => {
     canvas.requestPointerLock();
-
-    // keyboard movement
-    document.addEventListener("keydown", (event: KeyboardEvent) => {
-      const key = event.key;
-      if (!(key in timers)) return;
-
-      if (!keys[key] && intervalIds[key] == -1) {
-        keys[key] = true;
-        intervalIds[key] = setInterval(timers[key], 25);
-      }
-    });
-
-    document.addEventListener("keyup", (event: KeyboardEvent) => {
-      const key = event.key;
-      if (!(key in timers)) return;
-
-      if (keys[key] && intervalIds[key] != -1) {
-        keys[key] = false;
-        clearInterval(intervalIds[key]);
-        intervalIds[key] = -1;
-      }
-    });
-
-    // mouse movement
-    canvas.addEventListener("mousemove", (event: MouseEvent) => {
-      const sensitivity = 0.1;
-
-      yaw += event.movementX * sensitivity;
-      pitch -= event.movementY * sensitivity;
-
-      // Angle isn't 90 degrees, because at 90 degrees
-      // camera don't render shapes, cameraFront is (0,1,0)
-      const ALMOST_RIGHT_ANGLE = 89.9;
-
-      if (pitch > ALMOST_RIGHT_ANGLE) pitch = ALMOST_RIGHT_ANGLE;
-      if (pitch < -ALMOST_RIGHT_ANGLE) pitch = -ALMOST_RIGHT_ANGLE;
-
-      const direction = createDirection(yaw, pitch);
-      vec3.normalize(camFront, direction);
-    });
   });
 
   let cameraType: "free" | "scene" | "tracking" | "following" = "free";

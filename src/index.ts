@@ -145,7 +145,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     u_day: true,
   };
 
-  // connect options to uniforms
+  // shaders and day/night options
   const shaders = document.getElementById("shaders");
   if (!shaders || !(shaders instanceof HTMLSelectElement)) {
     throw new Error("Cannot get shaders element");

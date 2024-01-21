@@ -94,6 +94,13 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     throw new Error("WebGL2 is not supported");
   }
 
+  const xyzNode = document.getElementById("xyz");
+  const yawpitchNode = document.getElementById("yawpitch");
+  const fpsNode = document.getElementById("fps");
+  if (!xyzNode || !yawpitchNode || !fpsNode) {
+    throw new Error("Cannot get xyz, yawpitch or fps node");
+  }
+
   let shadersType: "phong" | "gouraud" | "flat" = "phong";
 
   const programs = {
@@ -345,8 +352,9 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
     uniforms.u_worldViewProjection = mat4.multiply(mat4.create(), viewProjection, world);
     uniforms.u_mode = 1;
 
-    twgl.setUniforms(programInfo, uniforms);
-    gl.drawElements(gl.TRIANGLES, sphereBufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+    xyzNode.textContent = `${camPosition[0].toFixed(0)}, ${camPosition[1].toFixed(0)}, ${camPosition[2].toFixed(0)}`;
+    yawpitchNode.textContent = `${yaw.toFixed(0)}, ${pitch.toFixed(0)}`;
+    fpsNode.textContent = `${fps.toFixed(0)}`;
 
     requestAnimationFrame(frame);
   };

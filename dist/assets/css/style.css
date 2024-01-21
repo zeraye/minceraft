@@ -12,3 +12,9 @@ body {
   background-color: #fa8072;
   height: calc(100vh - 20px);
 }
+
+#overlay {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}

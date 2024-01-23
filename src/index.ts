@@ -370,7 +370,7 @@ const createDirection = (yaw: number, pitch: number): vec3 => {
 
   const blocks: vec3[] = [];
 
-  const image = new Image(50, 50);
+  const image = new Image(40, 40);
   image.onload = () => {
     const ctx = document.createElement("canvas").getContext("2d");
 

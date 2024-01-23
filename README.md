@@ -1,5 +1,7 @@
 # minceraft
 
-# mirror
+Simple game engine, that looks like Minceraft.
 
-This repository is mirror of [minceraft on codeberg](https://codeberg.org/zeraye/minceraft).
+## author
+
+Author of this project is Jakub Rudnik.
